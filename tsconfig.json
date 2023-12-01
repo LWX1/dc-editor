@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",  // 用于解析非相对模块名称的基目录
+    "target": "ES2020",  // 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'
+    "useDefineForClassFields": true,
+    "module": "ESNext",  // 指定使用模块: 'commonjs', 'amd', 'system', 'umd' or 'es2015'
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],   // 指定要包含在编译中的库文件
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "Node",    // 选择模块解析策略： 'node' (Node.js) or 'classic' (TypeScript pre-1.6)。默认是classic
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true, // 将每个文件做为单独的模块 （与 'ts.transpileModule' 类似）.
+    "noEmit": true,   // 不生成输出文件
+    "jsx": "preserve",   // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'
+
+    /* Linting */
+    "strict": true, // 启用所有严格类型检查选项
+    "noFallthroughCasesInSwitch": true,  // 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）
+    "noImplicitAny": false,   // 在表达式和声明上有隐含的 any类型时报错
+    "noUnusedLocals": false,     // 有未使用的变量时，抛出错误
+    "noUnusedParameters": false,   // 有未使用的参数时，抛出错误
+  },
+  "include": [
+    "src/**/*.ts", 
+    "src/**/*.d.ts", 
+    "src/**/*.tsx", 
+    "src/**/*.vue"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" } ],
+  "paths": {
+    "src": "src/**/**"
+  }
+}

@@ -1,0 +1,37 @@
+body,
+html {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+}
+#app {
+    height: 100%;
+}
+.edit {
+    color: #1890ff;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.delete {
+    color: rgb(255, 24, 132);
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.disabled {
+    color: #999999;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-list {
+    display: flex;
+    gap: 10px;
+}
