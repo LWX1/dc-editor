@@ -6,7 +6,7 @@
     import { EEditorInputFeildType, EExecuteCommand } from 'src/interface/editor';
     import { CEditor } from 'src/utils/editor';
     import { getEditorFunction, getInputFeildOptions } from 'src/config/editorData';
-    import { IBarcode, IInputField } from 'src/interface/editorInputFeild';
+    import { IFourBarcode, IInputField } from 'src/interface/editorInputFeild';
     import { IObject } from 'src/interface';
     import ExampleTable from './components/exampleTable.vue';
     import { clearObject } from 'src/utils';
@@ -29,7 +29,7 @@
 
     const formModalRef = ref<FormInstance>();
 
-    const formModal = reactive<IBarcode>({});
+    const formModal = reactive<IFourBarcode>({});
 
     let isAdd = true;
 

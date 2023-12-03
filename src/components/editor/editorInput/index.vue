@@ -88,13 +88,6 @@
             visible.value = false;
             // console.log(res, 5555)
         });
-        //   formModalRef.value!.validate(async (valid) => {
-        //     if (valid) {
-        //       // console.log(formModal)
-        //       props.editor?.setFontObject(formModal);
-        //       visible.value = false
-        //     }
-        //   })
     };
 
     // 取消

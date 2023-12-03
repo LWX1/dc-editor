@@ -2248,7 +2248,12 @@ export const TwoMenus = (editor: CEditor): IObject<any> => {
                         },
                         events: {
                             click: () => {
-                                openConfig(EEditorInputFeildType.INSERT_SPECIFY_CHARACTER);
+                                // openConfig(EEditorInputFeildType.INSERT_SPECIFY_CHARACTER);
+                                SubInfo.publish(
+                                    OperateEvent,
+                                    EEditorSubOperateType.INPUT,
+                                    EEditorInputFeildType.INSERT_SPECIFY_CHARACTER
+                                );
                             },
                         },
                     },
@@ -2264,7 +2269,12 @@ export const TwoMenus = (editor: CEditor): IObject<any> => {
                         },
                         events: {
                             click: () => {
-                                openConfig(EEditorInputFeildType.INSERT_COMMENT);
+                                // openConfig(EEditorInputFeildType.INSERT_COMMENT);
+                                SubInfo.publish(
+                                    OperateEvent,
+                                    EEditorSubOperateType.INPUT,
+                                    EEditorInputFeildType.INSERT_COMMENT
+                                );
                             },
                             dragstart: function (e: DragEvent) {
                                 dragConfig(e, EEditorInputFeildType.INSERT_COMMENT);
@@ -2319,7 +2329,7 @@ export const TwoMenus = (editor: CEditor): IObject<any> => {
                     },
                 ],
             ],
-            视频: [
+            媒体: [
                 [
                     {
                         value: '插入视频',
@@ -2340,6 +2350,17 @@ export const TwoMenus = (editor: CEditor): IObject<any> => {
                             },
                         },
                     },
+                    // {
+                    //     value: '获取属性',
+                    //     label: '获取属性',
+                    //     events: {
+                    //         click: () => {
+                    //             const ele = editor.getCurrentElement();
+                    //             const result = editor.getElementProperties(ele);
+                    //             console.log(result);
+                    //         },
+                    //     },
+                    // },
                 ],
             ],
         },

@@ -1,6 +1,14 @@
 import { IAjax } from 'src/interface';
 
-// 转对象为字符串
+/**
+ * 转嵌套对象为对象 
+ * @param obj 
+ * @returns 
+ * @example
+ ```ts
+ {a:{b:1}} => { a.b: 1}
+ ```
+ */
 export const changeObjectToStr = (obj: any) => {
     if (!obj) {
         return obj;
@@ -19,7 +27,12 @@ export const changeObjectToStr = (obj: any) => {
     return result;
 };
 
-// 动态加载js
+/**
+ * 动态加载js
+ * @param url 地址
+ * @param callback 在家完成回调函数
+ * @returns
+ */
 export const loadScript = (url: string, callback?: Function) => {
     if (!url) return;
     let script = document.createElement('script');

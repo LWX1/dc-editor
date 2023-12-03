@@ -69,6 +69,7 @@
         } else {
             imageOptions = values;
         }
+        clearCanvas();
         visible.value = !visible.value;
         nextTick(() => {
             initImage(imageOptions);
@@ -105,6 +106,14 @@
         },
     ];
 
+    /** 初始化画布 */
+    const clearCanvas = () => {
+        if (canvas) {
+            canvas.clear();
+            mouseMode.value = '';
+        }
+    };
+
     /** 改变填充颜色 */
     const changeFill = (value) => {
         draw.setFillStroke({
@@ -123,14 +132,21 @@
      * @param options
      */
     const initImage = (options) => {
-        draw = new CDraw({
-            id: 'imgCanvas',
-            fill: fillRef.value,
-            stroke: strokeRef.value,
-        });
-        canvas = draw.canvas;
+        if (!draw) {
+            draw = new CDraw({
+                id: 'imgCanvas',
+                fill: fillRef.value,
+                stroke: strokeRef.value,
+            });
+            canvas = draw.canvas;
+        }
+
+        // console.log(options);
         draw.loadImage(options?.Src, options?.Attributes?.inneradditionshape, (img) => {
-            actionBackNext = new CActionBackNext(canvas);
+            if (!actionBackNext) {
+                actionBackNext = new CActionBackNext(canvas);
+            }
+
             saveImage = img;
         });
     };
@@ -278,10 +294,15 @@
 </template>
 
 <style lang="scss" scoped>
+    :deep(.my-canvas-container) {
+        height: 100% !important;
+        width: inherit;
+    }
     .canvas-box {
         height: calc(100vh - 270px);
         display: flex;
         justify-content: center;
+        overflow: auto;
     }
     .btn-list {
         margin-bottom: 10px;

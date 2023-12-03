@@ -2,15 +2,13 @@
     import BaseForm from 'src/components/BaseForm.vue';
     import BaseModal from 'src/components/BaseModal.vue';
     import { FormInstance } from 'element-plus';
-    import { computed, h, reactive, ref, toRef } from 'vue';
+    import { computed, reactive, ref, toRef } from 'vue';
     import { EEditorInputFeildType, EExecuteCommand } from 'src/interface/editor';
     import { CEditor } from 'src/utils/editor';
-    import { getEditorFunction, getInputFeildOptions } from 'src/config/editorData';
-    import { IFourLabel, IInputField } from 'src/interface/editorInputFeild';
+    import { getInputFeildOptions } from 'src/config/editorData';
+    import { IInputField } from 'src/interface/editorInputFeild';
     import { IObject } from 'src/interface';
-    import ExampleTable from './components/exampleTable.vue';
     import { clearObject } from 'src/utils';
-    import { EditContactActionSelected } from 'src/config/editorSelected';
 
     const props = defineProps({
         editor: {
@@ -18,16 +16,28 @@
         },
     });
 
+    // 表格数据
+    const tableListItems = ref<Array<IObject<string>>>([]);
+    const operateRef = ref();
+    const headerList = [
+        {
+            value: 'Text',
+            label: '文本',
+        },
+        {
+            value: 'Value',
+            label: '数值',
+        },
+    ];
+
     /*****弹框表单 */
-    const title = '文本标签属性';
-    // 案例
-    const exampleRef = ref();
+    const title = '编辑文档批注';
 
     const visible = ref(false);
 
     const formModalRef = ref<FormInstance>();
 
-    const formModal = reactive<IFourLabel>({});
+    const formModal = reactive<IObject<string>>({});
 
     let isAdd = true;
 
@@ -35,86 +45,51 @@
         return [
             {
                 type: 'Text',
-                label: '基本属性',
-            },
-            {
-                type: 'Input',
-                name: 'ID',
-                label: '编号',
-                rules: [{ required: true, message: '请输入编号ID' }],
-            },
-            {
-                type: 'Input',
-                name: 'Name',
-                label: '名称',
-            },
-            {
-                type: 'Auto',
-                name: 'VisibleExpression',
-                label: '可见性表达式',
-                options: getEditorFunction().map((item) => ({
-                    value: item.function,
-                    label: item.function,
-                })),
-                render: h(
-                    'div',
-                    {
-                        class: 'edit',
-                        onClick: () => {
-                            exampleRef.value.modalTogetter();
-                        },
-                    },
-                    '示例'
-                ),
-            },
-
-            {
-                type: 'CheckBox',
-                name: 'AutoSize',
-                label: '自动大小',
-            },
-            {
-                type: 'CheckBox',
-                name: 'Multiline',
-                label: '自动换行',
-            },
-            {
-                type: 'CheckBox',
-                name: 'Deleteable',
-                label: '能否被删除',
-            },
-            {
-                type: 'CheckBox',
-                name: 'Bold',
-                label: '是否加粗',
-            },
-            {
-                type: 'Text',
-                label: '连接模式设置',
-            },
-            {
-                type: 'Select',
-                name: 'ContactAction',
-                label: '模式',
-                options: EditContactActionSelected,
-            },
-            {
-                type: 'Input',
-                name: 'AttributeNameForContactAction',
-                label: '属性名',
-            },
-            {
-                type: 'Input',
-                name: 'LinkTextForContactAction',
-                label: '连接文本',
+                label: '基本信息',
             },
             {
                 type: 'Input',
                 name: 'Text',
-                label: '文本',
+                label: '批注内容',
                 others: {
                     autosize: { minRows: 3, maxRows: 5 },
                     type: 'textarea',
+                },
+            },
+            {
+                type: 'Text',
+                label: '颜色设置',
+            },
+
+            {
+                type: 'Color',
+                name: 'BackColor',
+                label: '背景颜色',
+            },
+            {
+                type: 'Color',
+                name: 'ForeColor',
+                label: '前景颜色',
+            },
+
+            {
+                type: 'Text',
+                label: '作者',
+            },
+            {
+                type: 'Input',
+                name: 'Author',
+                label: '姓名',
+                others: {
+                    disabled: true,
+                },
+            },
+            {
+                type: 'Input',
+                name: 'AuthorID',
+                label: '编号',
+                others: {
+                    disabled: true,
                 },
             },
         ];
@@ -142,16 +117,36 @@
     });
 
     // 提交
-    const submitModalForm = () => {
+    const submitModalForm = (form?: any, dataList?: any) => {
         formModalRef.value!.validate(async (valid) => {
             if (!props.editor) return;
             if (valid) {
-                const obj: IObject<any> = { ...formModal };
+                if (!form || !dataList) {
+                    [form, dataList] = operateRef.value!.getTableData();
+                }
+                const obj: IObject<any> = {};
+                const columns = ['Text', 'Value'];
+                let bool = true;
+                dataList.forEach((_: any, index: string) => {
+                    if (form[columns[0] + '_' + index] && form[columns[1] + '_' + index]) {
+                        obj[form[columns[0] + '_' + index]] = form[columns[1] + '_' + index];
+                    } else {
+                        bool = false;
+                    }
+                });
+                if (!bool) {
+                    ElMessage({
+                        type: 'warning',
+                        message: '请清空无效的数据',
+                    });
+                    return;
+                }
+                const formObj: IObject<any> = { ...formModal };
+                formObj.Attributes = obj;
                 if (isAdd) {
-                    props.editor?.executeCommand(EExecuteCommand.INSERT_LABEL_ELEMENT, false, obj);
+                    props.editor?.executeCommand(EExecuteCommand.INSERT_COMMENT, false, formObj);
                 } else {
-                    const ele = props.editor.getCurrentElement();
-                    props.editor.setElementProperties(obj, ele);
+                    props.editor.setCurrentComment(formObj);
                     props.editor.refreshDocument();
                 }
                 visible.value = !visible.value;
@@ -169,6 +164,8 @@
         visible.value = !visible.value;
         clearObject(formModal);
         let obj;
+        // 自定义列表
+
         if (typeof values === 'string') {
             isAdd = true;
             // 深拷贝测试数据，防止被修改
@@ -177,6 +174,20 @@
             isAdd = false;
             obj = values;
         }
+
+        if (obj.Attributes) {
+            const arr: Array<IObject<string>> = [];
+            for (let i in obj.Attributes) {
+                arr.push({
+                    Text: i,
+                    Value: obj.Attributes[i],
+                });
+            }
+            tableListItems.value = arr;
+        } else {
+            tableListItems.value = [];
+        }
+
         Object.assign(formModal, obj);
     };
 
@@ -197,7 +208,14 @@
             :formProps="formModalProps"
             :dataList="FormModalLists"
         />
-        <ExampleTable ref="exampleRef" />
+        <div style="padding: 0 20px">
+            <OperateList
+                title="自定义属性"
+                :dataList="tableListItems"
+                :headerList="headerList"
+                ref="operateRef"
+            />
+        </div>
     </BaseModal>
 </template>
 

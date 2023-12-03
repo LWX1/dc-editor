@@ -45,6 +45,10 @@
     import EditorFourHorizontalLine from 'src/components/editor/editorFourHorizontalLine.vue';
     import EditorFourButton from 'src/components/editor/editorFourButton.vue';
     import EditorImage from 'src/components/editor/editorImage/index.vue';
+    import EditorImageProperty from 'src/components/editor/editorImage/editorImageProperty.vue';
+    import EditorFourSpecify from 'src/components/editor/editorFourSpecify.vue';
+    import EditorFourComment from 'src/components/editor/editorFourComment.vue';
+    import { IFour } from 'src/interface/editorInputFeild';
     // 实例化编辑器
     const editors = ref<IObject<CEditor>>({});
     // 演示打开
@@ -283,7 +287,7 @@
     };
 
     // 各类元素
-    const getInputFeild = (values: string | { TypeName: string }) => {
+    const getInputFeild = (values: string | IFour) => {
         if (!values) return;
         if (typeof values === 'string') {
             switch (values) {
@@ -338,9 +342,13 @@
                     return openButton(values);
                 case EEditorInputFeildType.IMAGE:
                     return openImage(values);
+                case EEditorInputFeildType.INSERT_SPECIFY_CHARACTER:
+                    return openSpecify(values);
+                case EEditorInputFeildType.INSERT_COMMENT:
+                    return openComment(values);
             }
         } else {
-            switch (values.TypeName.toLowerCase()) {
+            switch (values.TypeName?.toLowerCase()) {
                 case EEditorElement.INPUT_FIELD:
                     return openInput(values);
                 case EEditorElement.BARCODE:
@@ -362,7 +370,15 @@
                 case EEditorElement.BUTTON:
                     return openButton(values);
                 case EEditorElement.IMAGE:
-                    return openImage(values);
+                    if (values.selfImageEdit) {
+                        return openImage(values);
+                    }
+                    return openImageProperty(values);
+
+                default:
+                    if (values.selfAttr === EEditorElement.COMMENT) {
+                        return openComment(values);
+                    }
             }
         }
     };
@@ -532,10 +548,28 @@
         editorButtonRef.value.modalTogetter(values);
     };
 
-    // 图片的属性
+    // 图片的编辑
     const editorImageRef = ref();
     const openImage = (values: any) => {
         editorImageRef.value.modalTogetter(values);
+    };
+
+    // 图片属性
+    const editorImagePropertyRef = ref();
+    const openImageProperty = (values: any) => {
+        editorImagePropertyRef.value.modalTogetter(values);
+    };
+
+    // 插入特殊符号
+    const editorSpecifyRef = ref();
+    const openSpecify = (values: any) => {
+        editorSpecifyRef.value.modalTogetter(values);
+    };
+
+    // 插入批注
+    const editorCommentRef = ref();
+    const openComment = (values: any) => {
+        editorCommentRef.value.modalTogetter(values);
     };
 </script>
 
@@ -704,6 +738,18 @@
     />
     <EditorImage
         ref="editorImageRef"
+        :editor="editor"
+    />
+    <EditorImageProperty
+        ref="editorImagePropertyRef"
+        :editor="editor"
+    />
+    <EditorFourSpecify
+        ref="editorSpecifyRef"
+        :editor="editor"
+    />
+    <EditorFourComment
+        ref="editorCommentRef"
         :editor="editor"
     />
 </template>

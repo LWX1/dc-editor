@@ -5,7 +5,7 @@
     import { EEditorInputFeildType, EExecuteCommand } from 'src/interface/editor';
     import { CEditor } from 'src/utils/editor';
     import { getInputFeildOptions } from 'src/config/editorData';
-    import { IInputField } from 'src/interface/editorInputFeild';
+    import { IFour, IInputField } from 'src/interface/editorInputFeild';
     import { IObject } from 'src/interface';
     import { clearObject } from 'src/utils';
 
@@ -27,7 +27,7 @@
 
     const formModalRef = ref<FormInstance>();
 
-    const formModal = reactive<IObject<string>>({});
+    const formModal = reactive<IFour>({});
 
     let isAdd = true;
 

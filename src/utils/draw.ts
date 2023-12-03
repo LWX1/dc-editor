@@ -1,5 +1,3 @@
-const fabric = window.fabric;
-
 /**
  * 绘制图形
  */
@@ -27,12 +25,13 @@ export class CDraw {
     }) {
         this.fill = options.fill as string;
         this.stroke = options.stroke as string;
-        let canvasElement = document.getElementById(options.id);
+        // let canvasElement = document.getElementById(options.id);
 
         // console.log(canvasElement);
-        this.canvas = new fabric.Canvas(canvasElement, {
-            containerClass: 'canvasElementContainer',
+        this.canvas = new window.fabric.Canvas(options.id, {
+            containerClass: 'my-canvas-container',
         });
+        // console.log(this.canvas, 6666);
         this.setSize(options.width, options.height);
     }
 
@@ -54,8 +53,8 @@ export class CDraw {
         this.width = width || this.width;
         this.height = height || this.height;
         this.canvas?.setDimensions({
-            width: width,
-            height: height,
+            width: this.width,
+            height: this.height,
         });
     }
 
@@ -67,13 +66,17 @@ export class CDraw {
      */
     loadImage(src, inneradditionshape, cb?) {
         let img = new Image();
-        if (src.indexOf(';base64') === -1 && src.indexOf('http') === -1) {
+        // debugger;
+        // console.log(src);
+        if (src.indexOf(',') === -1) {
             img.src = 'data:image/png;base64,' + src;
         } else {
             img.src = src;
         }
         const canvas = this.canvas as HTMLCanvasElement;
+        // console.log(img.src);
         img.onload = () => {
+            // debugger;
             // 设置画布的宽高
             this.setSize(img.width, img.height);
             if (inneradditionshape) {
@@ -137,7 +140,7 @@ export class CDraw {
             let left = options.pointer.x;
             let top = options.pointer.y;
             isMouseDown = true;
-            rect = new fabric.Rect({
+            rect = new window.fabric.Rect({
                 left: left,
                 top: top,
                 fill: this.fill,
@@ -188,7 +191,7 @@ export class CDraw {
             let top = options.pointer.y;
 
             isMouseDown = true;
-            Ellipse = new fabric.Ellipse({
+            Ellipse = new window.fabric.Ellipse({
                 left,
                 top,
                 fill: this.fill,
@@ -257,7 +260,7 @@ export class CDraw {
                         x2: options.pointer.x,
                         y2: options.pointer.y,
                     };
-                    Line = new fabric.Line([downPointer.x, downPointer.y, obj.x2, obj.y2], {
+                    Line = new window.fabric.Line([downPointer.x, downPointer.y, obj.x2, obj.y2], {
                         stroke: 'black', // 笔触颜色
                     });
                     // 添加椭圆形到画布上
@@ -291,7 +294,7 @@ export class CDraw {
             }
             let left = options.pointer.x;
             let top = options.pointer.y;
-            let IText = new fabric.IText('默认文字', {
+            let IText = new window.fabric.IText('默认文字', {
                 left: left,
                 top: top,
             });

@@ -6,7 +6,7 @@
     import { EEditorInputFeildType, EExecuteCommand } from 'src/interface/editor';
     import { CEditor } from 'src/utils/editor';
     import { getEditorFunction, getInputFeildOptions } from 'src/config/editorData';
-    import { IInputField, IPagePagination } from 'src/interface/editorInputFeild';
+    import { IFourButton, IInputField } from 'src/interface/editorInputFeild';
     import { IFormItem, IObject } from 'src/interface';
     import ExampleTable from './components/exampleTable.vue';
     import { clearObject } from 'src/utils';
@@ -28,7 +28,7 @@
 
     const formModalRef = ref<FormInstance>();
 
-    const formModal = reactive<IPagePagination>({});
+    const formModal = reactive<IFourButton>({});
 
     // 表单列表
     const FormModalLists = ref<Array<IFormItem>>([]);

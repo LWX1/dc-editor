@@ -4,10 +4,9 @@
     import { FormInstance } from 'element-plus';
     import { computed, h, reactive, ref, toRef } from 'vue';
     import { EEditorInputFeildType, EExecuteCommand } from 'src/interface/editor';
-    import { EditValueBindingArr } from 'src/config';
     import { CEditor } from 'src/utils/editor';
     import { getEditorFunction, getInputFeildOptions } from 'src/config/editorData';
-    import { IInputField, ITDBarcode } from 'src/interface/editorInputFeild';
+    import { IFourTDBarcode, IInputField } from 'src/interface/editorInputFeild';
     import { IObject } from 'src/interface';
     import ExampleTable from './components/exampleTable.vue';
     import { clearObject } from 'src/utils';
@@ -36,7 +35,9 @@
         ErroeCorrectionLevel: 'M',
     };
 
-    const formModal = reactive<ITDBarcode>({});
+    const formModal = reactive<IFourTDBarcode>({
+        BarcodeType: 'QR',
+    });
 
     let isAdd = true;
 

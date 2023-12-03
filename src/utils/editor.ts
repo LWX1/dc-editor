@@ -1,8 +1,9 @@
-import { EditConfig } from 'src/config';
+import { EditConfig, OperateEvent } from 'src/config';
 import { ajax, changeObjectToStr, importFile } from './index';
 import {
     EEditorElement,
     EEditorLayout,
+    EEditorSubOperateType,
     EEditorType,
     EExecuteCommand,
     ICAS,
@@ -546,11 +547,31 @@ export class CEditor {
             /** 拦截命令 */
             rootElement.EventBeforeExecuteCommand = function (CommandName) {
                 // // 例：
-                // 阻止医学表达式双击弹框
+                // 阻止医学表达式双击弹框，并自定义自己的弹框
                 if (CommandName === EExecuteCommand.ELEMENT_PROPERTIES) {
+                    let element = self.getCurrentElement();
+                    const result = self.getElementProperties(element);
+                    SubInfo.publish(OperateEvent, EEditorSubOperateType.INPUT, result);
                     return true;
                 }
                 return false;
+            };
+
+            // 重写双击图片弹框
+            rootElement.imgEditDialog = (options) => {
+                SubInfo.publish(OperateEvent, EEditorSubOperateType.INPUT, {
+                    selfImageEdit: true,
+                    ...(options || {}),
+                });
+            };
+
+            // 重写批注
+            // const WriterControl_Dialog = window.WriterControl_Dialog.EditDocumentCommentsDialog;
+            window.WriterControl_Dialog.EditDocumentCommentsDialog = (options, rootElement) => {
+                SubInfo.publish(OperateEvent, EEditorSubOperateType.INPUT, {
+                    selfAttr: EEditorElement.COMMENT,
+                    ...(options || {}),
+                });
             };
             self.controlOnLoadCallback && self.controlOnLoadCallback();
         }
@@ -990,18 +1011,14 @@ export class CEditor {
     }
 
     /**
-     * 设置当前批注的值
-     * @param property 属性
-     * @param value 属性的值
+     * 设置当前批注
+     * @param options 配置
      * @param instance Element
      * @returns
      */
-    setCommentContent(property: string, value: any, instance?: HTMLElement) {
+    setCurrentComment(options: any, instance?: HTMLElement) {
         instance = instance || this.instance;
-        const obj = instance.GetCurrentComment();
-        const result = instance.GetCurrentComment(obj[property], value);
-        this.refreshDocument(instance);
-        return result;
+        return instance.SetCurrentComment(options);
     }
 
     /**

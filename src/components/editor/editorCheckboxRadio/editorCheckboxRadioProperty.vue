@@ -6,7 +6,7 @@
     import { EEditorElement, EEditorInputFeildType } from 'src/interface/editor';
     import { CEditor } from 'src/utils/editor';
     import { getEditorFunction, getInputFeildOptions } from 'src/config/editorData';
-    import { IInputField, IRadioCheckbox } from 'src/interface/editorInputFeild';
+    import { IFourRadioCheckbox, IInputField } from 'src/interface/editorInputFeild';
     import { IObject } from 'src/interface';
     import ExampleTable from '../components/exampleTable.vue';
     import { clearObject } from 'src/utils';
@@ -68,7 +68,7 @@
 
     const formModalRef = ref<FormInstance>();
 
-    const formModal = reactive<IRadioCheckbox>({});
+    const formModal = reactive<IFourRadioCheckbox>({});
 
     const dataSourceHooks = useDataSource();
 

@@ -1613,7 +1613,7 @@ export enum EExecuteCommand {
     INSERT_DC_IMAGE = 'DCInsertImage',
 
     /**
-     * 视频
+     * 媒体
      */
     INSERT_MEDIA_ELEMENT = 'insertmediaelement',
     /****  特殊字符 ****/
@@ -1865,4 +1865,6 @@ export enum EEditorElement {
     MEDICAL_EXPRESSION = 'xtextnewmedicalexpressionelement',
     /** 媒体 */
     MEDIA = 'xtextmediaelement',
+    /** 批注 */
+    COMMENT = 'xtextcommentelement',
 }

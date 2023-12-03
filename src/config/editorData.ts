@@ -64,7 +64,7 @@ export const getInputFeildOptions = (options?: any) => ({
             Alignment: 'Far',
             BackgroundTextColor: 'blue',
             TextColor: null,
-            SpecifyWidth: '300',
+            SpecifyWidth: 300,
             InnerEditStyle: 'DropDownList',
             BackgroundColor: 'yellow',
             ListItems: [
@@ -98,7 +98,7 @@ export const getInputFeildOptions = (options?: any) => ({
             },
             BackgroundTextColor: 'blue',
             TextColor: 'red',
-            SpecifyWidth: '300',
+            SpecifyWidth: 300,
             InnerEditStyle: 'DateTime',
             BackgroundColor: 'yellow',
             EditorActiveMode: 'F2, MouseDblClick, MouseClick',
@@ -148,8 +148,8 @@ export const getInputFeildOptions = (options?: any) => ({
         data: {
             ID: 'barcode1',
             Text: '1234566',
-            Width: '1000',
-            Height: '300',
+            Width: 1000,
+            Height: 300,
             ShowText: true,
             TextAlignment: 'Right',
             ValueBinding: {
@@ -496,7 +496,7 @@ export const getInputFeildOptions = (options?: any) => ({
         file: true,
         type: EExecuteCommand.INSERT_IMAGE,
         data: {
-            ID: 'img1',
+            ID: 'img1' + new Date().valueOf(),
             Width: 200,
             Height: 200,
             SaveContentInFile: true,
@@ -507,7 +507,7 @@ export const getInputFeildOptions = (options?: any) => ({
     [EEditorInputFeildType.DC_IMAGE]: {
         type: EExecuteCommand.INSERT_DC_IMAGE,
         data: {
-            ID: 'img1',
+            ID: 'img' + new Date().valueOf(),
             Width: 200,
             Height: 200,
             SaveContentInFile: true,

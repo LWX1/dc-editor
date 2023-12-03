@@ -12,7 +12,7 @@ export const FormDefaultConfig = {
 };
 
 // http://localhost:8055
-export const AddrUrl = 'http://192.168.1.148:82';
+export const AddrUrl = 'http://localhost:82';
 
 // 编辑器地址
 export const EditAddr: IObject<string> = {

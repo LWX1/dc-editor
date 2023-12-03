@@ -59,9 +59,10 @@ export const getEditorValueBinding = (formModal) => {
  * @param property 属性
  * @param preview 预览
  * @param options 自定义配置
+ * @param cb 回调函数
  * @returns
  */
-export const handleUploadImage = (form, property, preview, options?) => {
+export const handleUploadImage = (form, property, preview, options?, cb?) => {
     return {
         class: 'self-upload-style',
         hiddenBtn: false,
@@ -71,6 +72,7 @@ export const handleUploadImage = (form, property, preview, options?) => {
         'before-upload': (file: Blob) => {
             imageChangeBase64(file).then((res: any) => {
                 form[property] = res;
+                cb && cb();
             });
 
             return false;
